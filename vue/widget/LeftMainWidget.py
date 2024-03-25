@@ -7,11 +7,14 @@ class LeftMainWidget(QWidget):
         
         self.boîte_de_réception_to_try = ["Inbox", "INBOX"]
         self.éléments_envoyés_to_try = ["INBOX/OUTBOX", "Sent"]
-        self.élements_supprimés_to_try = ["INBOX/TRASH", "Deleted"]
+        self.éléments_supprimés_to_try = ["INBOX/TRASH", "Deleted"]
         self.spam_to_try = ["Junk","[Gmail]/Spam"]
         self.controller = controller
         self.emails = emails
         self.show_selected_mails_callback = show_selected_mails_callback
+        self.all_emails = {}
+        self.loadEmails()
+        
         
         # Ajoutez ici tout le contenu de la partie gauche de votre application
         self.customTreeWidget = CustomTreeWidget(self.controller.bdd)
@@ -24,34 +27,41 @@ class LeftMainWidget(QWidget):
         layout.addWidget(self.customTreeWidget)
         self.setLayout(layout)
 
+    
+    def loadEmails(self):
+        
+        emailsNames = self.controller.bdd.get_all_email_addresses()
+        
+        categories_to_try = ["Boîte de réception","Éléments envoyés","Éléments supprimés","Spam"]
+        
+        for emailname in emailsNames :
+            emaildict = {}
+            for category_name in categories_to_try:
+                emails = []
+                for mailbox in getattr(self, f"{category_name.lower().replace(' ', '_')}_to_try"):
+                    emails.extend(self.controller.getMailsFromAdress(emailname, mailbox))
+                emaildict[category_name] = emails
+            self.all_emails[emailname] = emaildict
+            
+        general_dict = {}
+        for category_name,_ in categories_to_try:
+            general_dict[category_name] = self.controller.getAllStoreMail(getattr(self, f"{category_name.lower().replace(' ', '_')}_to_try"))
+        self.all_emails["Général"] = general_dict
+
+
     def expand_categories(self, item):
         # Implémentez la logique pour l'expansion des catégories ici
         if item.parent() is not None:
             parent_text = item.parent().text(0)
             item_text = item.text(0)
-            self.emails.clear()
-            
+                        
             if parent_text == "Général":
-                if item_text in ["Boîte de réception", "Éléments envoyés", "Élements supprimés"]:
-                    if item_text == "Boîte de réception":
-                        self.emails = self.controller.getAllStoreMail(self.boîte_de_réception_to_try)
-                    elif item_text == "Éléments envoyés":
-                        self.emails = self.controller.getAllStoreMail(self.éléments_envoyés_to_try)
-                    elif item_text == "Élements supprimés":
-                        self.emails = self.controller.getAllStoreMail(self.élements_supprimés_to_try)
-                else:
-                    for mailbox in self.boîte_de_réception_to_try + self.éléments_envoyés_to_try + self.élements_supprimés_to_try + self.spam_to_try:
-                        self.emails = self.controller.getMailsFromAdress(parent_text, mailbox)
-                        if len(self.emails) > 0:
-                            break
+                if item_text in ["Boîte de réception", "Éléments envoyés", "Éléments supprimés"]:
+                    self.emails = self.all_emails["Général"][item_text.lower()]
             else:
-                if item_text in ["Boîte de réception", "Éléments envoyés", "Élements supprimés", "Spam"]:
-                    if hasattr(self, f"{item_text.lower().replace(' ', '_')}_to_try"):
-                        for mailbox in getattr(self, f"{item_text.lower().replace(' ', '_')}_to_try"):
-                            self.emails = self.controller.getMailsFromAdress(parent_text, mailbox)
-                            if len(self.emails) > 0:
-                                break
-                            
+                if item_text in ["Boîte de réception", "Éléments envoyés", "Éléments supprimés", "Spam"]:
+                    self.emails = self.all_emails[parent_text.lower()][item_text.lower()]
+
             self.show_selected_mails_callback(self.emails)
             
         if item.childCount() > 0:
