@@ -36,12 +36,11 @@ class SQLiteDAO:
 
     def decrypt_data(self, encrypted_data, iv):
         cipher = AES.new(self.password.encode('utf-8'), AES.MODE_CBC, iv)
-        #print("chelou : " + cipher.decrypt(encrypted_data).decode('utf-8'))
-        pt_bytes = unpad(cipher.decrypt(encrypted_data), AES.block_size)
         try :
+            pt_bytes = unpad(cipher.decrypt(encrypted_data), AES.block_size)
             return pt_bytes.decode('utf-8')
         except :
-            return pt_bytes
+            return encrypted_data
 
     def add_email_password(self, email, password):
         encrypted_password, iv = self.encrypt_data(password)
