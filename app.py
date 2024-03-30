@@ -1,13 +1,10 @@
-from models.email_client.email_parser import Email_Parser
-from models import email
-from models.utils import utils
 from vue.mainPage import MailListWidget
-from controller.MailListWidgetController import MailListWidgetController
+from controller.mailListController import mailListController
 from PyQt5.QtWidgets import QApplication,QDialog
-from models.DB.SQliteDAO import SQLiteDAO
 from vue.loginPage import PasswordInputDialog
+from models.emailManager import EmailManager
 import sys
-
+from qt_material import apply_stylesheet
 if __name__ == "__main__":
     # Création de l'application
     app = QApplication(sys.argv)
@@ -23,20 +20,17 @@ if __name__ == "__main__":
         # Récupération du mot de passe
         password = dialog.password
 
-        # Initialisation de la base de données avec le mot de passe
-        bdd = SQLiteDAO("models/DB/database.db", password)
+        # Initialisation du modèle 
+        emailManager = EmailManager("models/DB/database.db", password)
 
-        # Création du contrôleur
-        mail_list_controller = MailListWidgetController(bdd)
-
+        # Création du contrôleur de gestion des mails
+        mail_list_controller = mailListController(emailManager)
+        
         # Création de la fenêtre principale et affichage
         window = MailListWidget(mail_list_controller)
         window.show()
-
-        # Exécution de l'application
+        apply_stylesheet(app, theme='light_red.xml')
         app.exec_()
-
-
 
     #gmail
     #mailparser = Email_Parser("imap.gmail.com","julienvacher44@gmail.com","azph qifg xunl elxw")

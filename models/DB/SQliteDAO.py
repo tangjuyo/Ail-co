@@ -9,9 +9,9 @@ class SQLiteDAO:
         self.db_file = db_file
         self.password = password
         self.conn = sqlite3.connect(db_file, check_same_thread=False)
-        self.create_table()
+        self.create_tables()
 
-    def create_table(self):
+    def create_tables(self):
         cursor = self.conn.cursor()
 
         try :
@@ -22,6 +22,22 @@ class SQLiteDAO:
                     email TEXT UNIQUE,
                     password TEXT,
                     iv_password TEXT
+                )
+            ''')
+            # Créer la table si elle n'existe pas encore
+            cursor.execute(f'''
+                CREATE TABLE IF NOT EXISTS mails (
+                    id INTEGER PRIMARY KEY,
+                    sender BLOB,
+                    iv_sender BLOB,
+                    subject BLOB,
+                    iv_subject BLOB,
+                    body BLOB,
+                    iv_body BLOB,
+                    folder TEXT,
+                    mail TEXT,
+                    date TEXT,
+                    compiled_value TEXT UNIQUE
                 )
             ''')
             self.conn.commit()
@@ -56,85 +72,37 @@ class SQLiteDAO:
 
     def add_email(self, email):
         cursor = self.conn.cursor()
-        table_name = email.get_mail().replace('@', '_').replace('.', '_')
-
+        encrypted_sender, iv_sender = self.encrypt_data(email[0])
+        encrypted_subject, iv_subject = self.encrypt_data(email[1])
         try:
-            # Créer la table si elle n'existe pas encore
-            cursor.execute(f'''
-                CREATE TABLE IF NOT EXISTS {table_name} (
-                    id INTEGER PRIMARY KEY,
-                    sender BLOB,
-                    iv_sender BLOB,
-                    subject BLOB,
-                    iv_subject BLOB,
-                    body BLOB,
-                    iv_body BLOB,
-                    folder TEXT,
-                    mail TEXT,
-                    date TEXT,
-                    compiled_value TEXT UNIQUE
-                )
-            ''')
+            encrypted_body, iv_body = self.encrypt_data(email[2])
         except:
-            print("table existe déja")
-
-        encrypted_sender, iv_sender = self.encrypt_data(email.get_sender())
-        encrypted_subject, iv_subject = self.encrypt_data(email.get_subject())
-        try:
-            encrypted_body, iv_body = self.encrypt_data(email.get_body())
-        except:
-            encrypted_body, iv_body = email.get_body(), None
+            encrypted_body, iv_body = email[2], None
         
-        uid = email.get_uid()
+        uid = email[6]
         try:
             # Insérer les données dans la table correspondante
             cursor.execute(f'''
-                INSERT INTO {table_name} (sender, iv_sender, subject, iv_subject, body, iv_body, folder, mail, date,compiled_value)
+                INSERT INTO mails (sender, iv_sender, subject, iv_subject, body, iv_body, folder, mail, date,compiled_value)
                 VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
-            ''', (encrypted_sender, iv_sender, encrypted_subject, iv_subject, encrypted_body, iv_body, email.get_folder(), email.get_mail(), email.get_date(), str(email.mail) + str(uid)))
+            ''', (encrypted_sender, iv_sender, encrypted_subject, iv_subject, encrypted_body, iv_body, email[3], email[4], email[5], str(email[4]) + str(uid)))
 
             self.conn.commit()
         except:
             pass
 
-    def get_emails(self, folder):
+    def get_emails(self):
         cursor = self.conn.cursor()
-        cursor.execute("SELECT name FROM sqlite_master WHERE type='table'")
-        table_names = cursor.fetchall()
         decrypted_emails = []
-
-        for table_name in table_names:
-            if table_name[0] == "email_password":
-                continue  # Ignorer la table email_password
-            cursor.execute(f"SELECT * FROM {table_name[0]} WHERE folder = ?", (folder,))
-            emails = cursor.fetchall()
-
-            for email in emails:
-                decrypted_sender = self.decrypt_data(email[1], email[2])
-                decrypted_subject = self.decrypt_data(email[3], email[4])
-                decrypted_body = self.decrypt_data(email[5], email[6])
-                decrypted_email = Email(decrypted_sender, decrypted_subject, decrypted_body, email[7], email[8], email[9], email[10])
-                decrypted_emails.append(decrypted_email)
-
-        return decrypted_emails
-
-    
-    def count_emails_in_mailbox_folder(self, mailbox,folder):
-        mailbox_table_name = mailbox.replace('@', '_').replace('.', '_')
-        cursor = self.conn.cursor()
-        cursor.execute(f"SELECT COUNT(*) FROM {mailbox_table_name} WHERE folder = ?", (folder,))
-        count = cursor.fetchone()[0]
-        return count
-
-
-    def count_all_emails(self,listTags):
-        emails = self.get_all_email_addresses()
-        count = 0
+        cursor.execute(f"SELECT * FROM mails")
+        emails = cursor.fetchall()
         for email in emails:
-            for tag in listTags:
-                count += self.count_emails_in_mailbox_folder(email,tag)
-        return count
-
+            decrypted_sender = self.decrypt_data(email[1], email[2])
+            decrypted_subject = self.decrypt_data(email[3], email[4])
+            decrypted_body = self.decrypt_data(email[5], email[6])
+            decrypted_email = [decrypted_sender, decrypted_subject, decrypted_body, email[7], email[8], email[9], email[10]]
+            decrypted_emails.append(decrypted_email)
+        return decrypted_emails
 
     def get_all_email_addresses(self):
         cursor = self.conn.cursor()
@@ -155,12 +123,9 @@ class SQLiteDAO:
             email_password_pairs.append((email, decrypted_password))
         return email_password_pairs
     
-
-
     def get_emails_for_address(self, address,folder):
         cursor = self.conn.cursor()
-        table_name = address.replace('@', '_').replace('.', '_')
-        cursor.execute(f'SELECT * FROM {table_name} WHERE folder = ?', (folder,))
+        cursor.execute(f'SELECT * FROM mails WHERE folder = ? AND mail = ?', (folder, address))
         emails = cursor.fetchall()
         decrypted_emails = []
         for email in emails:

@@ -1,6 +1,6 @@
 import sys
 from PyQt5.QtWidgets import QWidget, QVBoxLayout, QLabel,QApplication
-from PyQt5.QtCore import Qt,pyqtSignal
+from PyQt5.QtCore import Qt
 from PyQt5.QtGui import QMovie
 
 class LoadingWidget(QWidget):
@@ -12,8 +12,6 @@ class LoadingWidget(QWidget):
     def initUI(self):
         layout = QVBoxLayout()
         self.setWindowTitle("Chargement de vos mails...")
-
-
         # QLabel pour afficher le texte
         self.textLabel = QLabel("Chargement de vos mails...")
         self.textLabel.setAlignment(Qt.AlignCenter)
@@ -25,8 +23,6 @@ class LoadingWidget(QWidget):
         layout.addWidget(self.loadingLabel)
         self.setLayout(layout)
         
-
-    
     def loadMovie(self):
         # Créer et configurer l'animation du GIF
         self.movie = QMovie("vue/image/loading.gif")

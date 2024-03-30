@@ -1,9 +1,6 @@
 from PyQt5.QtWidgets import QApplication, QWidget, QVBoxLayout, QLineEdit, QPushButton, QComboBox
-from PyQt5.QtCore import pyqtSignal
-from PyQt5.QtCore import Qt
+from PyQt5.QtCore import pyqtSignal,Qt
 from vue.widget.loadingWidget import LoadingWidget
-from models.RefreshThreadEmail import RefreshWorker
-from models.provider import Provider
 
 class subscribeEmailPage(QWidget):
     # Signal personnalisé pour envoyer les informations de l'adresse mail, du mot de passe et du fournisseur
@@ -16,8 +13,8 @@ class subscribeEmailPage(QWidget):
         self.setWindowFlags(self.windowFlags() | Qt.WindowCloseButtonHint)
         self.resize_to_half_screen()
         self.layout = QVBoxLayout()
-        self.bdd = controller.getBdd()
         self.controller = controller
+        
         # Zone de texte pour saisir l'adresse e-mail
         self.email_edit = QLineEdit()
         self.email_edit.setPlaceholderText("Adresse e-mail")
@@ -45,8 +42,7 @@ class subscribeEmailPage(QWidget):
         email = self.email_edit.text()
         password = self.password_edit.text()
         provider = self.provider_combo.currentText()
-        self.bdd.add_email_password(email,password)
-        
+        self.controller.add_email_password(email,password)
         # Émet le signal avec les informations de l'adresse mail, du mot de passe et du fournisseur
         self.email_added.emit(email, password, provider)
 
@@ -57,17 +53,11 @@ class subscribeEmailPage(QWidget):
         half_height = screen_rect.height() / 1.75
         self.resize(int(half_width), int(half_height))
         
-        
     def handle_new_email(self, email, password, provider):
         self.close()
         #création du widget de loading
         self.loadingWidget = LoadingWidget()
         self.loadingWidget.loadMovie()
-        self.thread = RefreshWorker(self.controller,self.controller.parseAllEmailsFromAdress,email,password,Provider(provider).getProvider())
-        self.thread.finished.connect(self.thread.deleteLater)
-        self.thread.finished.connect(self.loadingWidget.close)
-        self.thread.finished.connect(self.loadingWidget.deleteLater)
-        self.thread.finished.connect(self.thread_finished_signal)
-        self.thread.start()
+        self.controller.addEmailsThread(self.loadingWidget,email,password,provider)
         # Affichez le widget de chargement
         self.loadingWidget.show()

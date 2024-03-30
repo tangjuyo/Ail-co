@@ -1,9 +1,9 @@
 from PyQt5.QtCore import QThread
 
 class RefreshWorker(QThread):
-    def __init__(self, controller, method=None, *args):
+    def __init__(self, emailManager, method=None, *args):
         super().__init__()
-        self.controller = controller
+        self.emailManager = emailManager
         self.method = method
         self.args = args
 
