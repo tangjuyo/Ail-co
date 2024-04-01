@@ -1,6 +1,5 @@
-from PyQt5.QtWidgets import QVBoxLayout, QWidget, QApplication, QPushButton
-from PyQt5.QtWebEngineWidgets import QWebEngineView, QWebEngineProfile, QWebEnginePage
-from PyQt5.QtCore import QUrl  
+from PySide6.QtWidgets import QVBoxLayout, QWidget, QApplication
+from PySide6.QtWebEngineWidgets import QWebEngineView
 
 class emailViewPage(QWidget):
     def __init__(self, parent=None):

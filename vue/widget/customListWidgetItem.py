@@ -1,10 +1,36 @@
-from PyQt5.QtWidgets import QWidget, QLabel, QVBoxLayout, QHBoxLayout, QCheckBox
-from PyQt5 import QtGui
-from PyQt5.QtCore import Qt
+from PySide6.QtWidgets import QWidget, QLabel, QVBoxLayout, QHBoxLayout, QCheckBox 
+from PySide6 import QtGui
+from PySide6.QtCore import Qt 
 
-class CustomListWidgetItem(QWidget):
+class CustomWidgetItem:
+    def __init__(self):
+        self.sender = ""
+        self.subject = ""
+        self.icon_path = ""
+        self.date = ""
+        self.data = ""
+
+    def setDate(self, text):
+        self.date = text
+
+    def setSender(self, text):
+        self.sender = text
+
+    def setSubject(self, text):
+        self.subject = text
+
+    def setIcon(self, image_path):
+        self.icon_path = image_path
+
+    def setData(self, data):
+        self.data = data
+
+    def getData(self):
+        return self.data
+"""
+class CustomWidgetItem(QWidget):
     def __init__(self, parent=None):
-        super(CustomListWidgetItem, self).__init__(parent)
+        super(CustomWidgetItem, self).__init__(parent)
         
         # Layouts
         self.main_layout = QHBoxLayout()
@@ -72,3 +98,4 @@ class CustomListWidgetItem(QWidget):
     
     def getData(self):
         return self.path
+"""

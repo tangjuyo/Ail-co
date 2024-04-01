@@ -1,19 +1,22 @@
+from PySide6.QtWidgets import QApplication,QDialog
 from vue.mainPage import MailListWidget
 from controller.mailListController import mailListController
-from PyQt5.QtWidgets import QApplication,QDialog
 from vue.loginPage import PasswordInputDialog
 from models.emailManager import EmailManager
 import sys
 from qt_material import apply_stylesheet
+
+
 if __name__ == "__main__":
     # Création de l'application
     app = QApplication(sys.argv)
 
     # Création de la boîte de dialogue pour le mot de passe
     dialog = PasswordInputDialog()
-
+    
+    apply_stylesheet(dialog, theme='light_red.xml')
     # Affichage de la boîte de dialogue et récupération du résultat
-    result = dialog.exec_()
+    result = dialog.exec()
 
     # Vérification si un mot de passe a été fourni
     if result == QDialog.Accepted:
@@ -30,7 +33,7 @@ if __name__ == "__main__":
         window = MailListWidget(mail_list_controller)
         window.show()
         apply_stylesheet(app, theme='light_red.xml')
-        app.exec_()
+        app.exec()
 
     #gmail
     #mailparser = Email_Parser("imap.gmail.com","julienvacher44@gmail.com","azph qifg xunl elxw")

@@ -1,10 +1,10 @@
 from models.RefreshThreadEmail import RefreshWorker
-from PyQt5.QtWidgets import QWidget
+from PySide6.QtWidgets import QWidget
 from models.provider import Provider
-from PyQt5.QtCore import pyqtSignal
+from PySide6.QtCore import Signal
 
 class mailListController(QWidget):
-    add_email_thread_finished_signal = pyqtSignal()
+    add_email_thread_finished_signal = Signal()
     
     def __init__(self,emailManager):
         super().__init__()

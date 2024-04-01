@@ -1,19 +1,21 @@
-from PyQt5.QtWidgets import QApplication, QWidget,QHBoxLayout, QVBoxLayout
-from PyQt5.QtCore import Qt
+from PySide6.QtWidgets import QApplication, QWidget,QHBoxLayout, QVBoxLayout
+from PySide6.QtCore import Qt
+from PySide6.QtGui import QScreen
 from vue.widget.leftMainWidget import leftMainWidget
 from vue.widget.rightMainWidget import rightMainWidget
 from vue.widget.bandeauWidget import bandeauWidget
 from vue.widget.cTitleBar import CTitleBar
+
 class MailListWidget(QWidget):
     
     def __init__(self,mailListController):
         super().__init__()
-        self.resize_to_half_screen()  # Redimensionne la fenêtre à la moitié de l'écran
+        self.resize_to_full_screen()  # Redimensionne la fenêtre à l'écran entier
         self.mailListController = mailListController
         self.emails = []
         self.setWindowFlags(self.windowFlags() | Qt.FramelessWindowHint)
         layout = QVBoxLayout(self)
-        layout.addWidget(CTitleBar(self, title='AilEco'))
+        layout.addWidget(CTitleBar(self, title='AilEco',parent=True))
         #barre latérale de gauche
         self.left_panel = leftMainWidget(self.mailListController,self.emails,self.updateMailsView)
         self.mailListController.add_email_thread_finished_signal.connect(self.updateTreeView)
@@ -44,9 +46,9 @@ class MailListWidget(QWidget):
     def updateMailsView(self,emails):
         self.right_panel.showSelectedMails(emails)
     
-    def resize_to_half_screen(self):
-        desktop = QApplication.desktop()
-        screen_rect = desktop.screenGeometry()
-        half_width = screen_rect.width() / 1.25
-        half_height = screen_rect.height() / 1.25
+    def resize_to_full_screen(self):
+        screen = QApplication.primaryScreen()
+        screen_rect = screen.availableGeometry()
+        half_width = screen_rect.width()
+        half_height = screen_rect.height()
         self.resize(int(half_width), int(half_height))

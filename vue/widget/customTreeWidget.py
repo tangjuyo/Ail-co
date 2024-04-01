@@ -1,6 +1,6 @@
-from PyQt5.QtWidgets import QVBoxLayout,QTreeWidget,QTreeWidgetItem,QWidget,QSizePolicy
-from PyQt5.QtGui import QFont,QIcon
-from PyQt5.QtCore import Qt
+from PySide6.QtWidgets import QVBoxLayout,QTreeWidget,QTreeWidgetItem,QWidget,QSizePolicy
+from PySide6.QtGui import QFont,QIcon
+from PySide6.QtCore import Qt
 
 class CustomTreeWidget(QWidget):
     def __init__ (self,controller, parent = None):

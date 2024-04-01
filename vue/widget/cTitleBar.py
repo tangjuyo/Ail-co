@@ -1,6 +1,3 @@
-#!/usr/bin/env python
-# -*- coding: utf-8 -*-
-
 """
 Created on 2019年7月15日
 @author: Irony
@@ -10,30 +7,24 @@ Created on 2019年7月15日
 @description: 自定义标题栏
 """
 
-from PyQt5.QtCore import Qt, QPointF
-from PyQt5.QtGui import QWindowStateChangeEvent, QFont, QMouseEvent
-from PyQt5.QtWidgets import QWidget, QHBoxLayout, QSpacerItem, QSizePolicy, \
-    QLabel, QPushButton, QApplication
-
-
-__Author__ = 'Irony'
-__Copyright__ = 'Copyright (c) 2019'
-
+from PySide6.QtCore import Qt, QPointF
+from PySide6.QtGui import QWindowStateChangeEvent, QFont, QMouseEvent,QIcon,QPixmap
+from PySide6.QtWidgets import QWidget, QHBoxLayout, QSpacerItem, QSizePolicy,QLabel, QPushButton, QApplication, QToolButton,QMenu
 
 class CTitleBar(QWidget):
 
     Radius = 24
 
-    def __init__(self, *args, title='', **kwargs):
+    def __init__(self, *args, title='',parent=False, **kwargs):
         super(CTitleBar, self).__init__(*args, **kwargs)
-        self.setupUi()
-        # 支持设置背景
+        self.setupUi(parent)
         self.setAttribute(Qt.WA_StyledBackground, True)
         self.mPos = None
         # 找到父控件(或者自身)
         self._root = self.window()  # self.parent() or self
-
+        
         self.labelTitle.setText(title)
+        self.labelTitle.setStyleSheet("font-weight: bold;font-size: 20px;")
         # 是否需要隐藏最小化或者最大化按钮
         self.showMinimizeButton(self.isMinimizeable())
         self.showNormalButton(False)
@@ -102,11 +93,9 @@ class CTitleBar(QWidget):
         if isinstance(event, QWindowStateChangeEvent):
             if self._root.isVisible() and not self._root.isMinimized() and \
                     self.testWindowFlags(Qt.WindowMinMaxButtonsHint):
-                # 如果当前是最大化则隐藏最大化按钮
                 maximized = self._root.isMaximized()
                 self.showMaximizeButton(not maximized)
                 self.showNormalButton(maximized)
-                # 修复最大化边距空白问题
                 if maximized:
                     self._oldMargins = self._root.layout().getContentsMargins()
                     self._root.layout().setContentsMargins(0, 0, 0, 0)
@@ -135,7 +124,6 @@ class CTitleBar(QWidget):
 
     def mouseMoveEvent(self, event):
         if self._root.isMaximized():
-            # 最大化时不可移动
             return
         if event.buttons() == Qt.LeftButton and self.mPos:
             pos = event.pos() - self.mPos
@@ -147,12 +135,32 @@ class CTitleBar(QWidget):
     def setWindowTitle(self, title):
         self.labelTitle.setText(title)
 
-    def setupUi(self):
+    def add_files_menu_button(self):
+        # Création du bouton
+        self.buttonFiles = QToolButton(self)
+        #self.buttonFiles.setPopupMode(QToolButton.InstantPopup)
+        self.buttonFiles.setIcon(QIcon(QPixmap("vue/image/menu.png")))
+        self.buttonFiles.setStyleSheet("font-size: 20px;margin: 0;")
+        self.buttonFiles.clicked.connect(self.show_menu)
+        self.layout().addWidget(self.buttonFiles)
+        
+        self.menu = QMenu(self)
+        self.menu.addAction("action1")
+        self.menu.addAction("action2")
+        self.menu.addAction("action3")
+        
+        return self.menu
+    
+    def show_menu(self):
+        self.menu.popup(self.buttonFiles.mapToGlobal(self.buttonFiles.rect().bottomLeft()))
+    def setupUi(self,parent):
         self.setMinimumSize(0, self.Radius)
         self.setMaximumSize(0xFFFFFF, self.Radius)
         layout = QHBoxLayout(self)
         layout.setContentsMargins(0, 0, 0, 0)
         layout.setSpacing(0)
+        if parent:
+            self.add_files_menu_button()
         for name in ('widgetMinimum', 'widgetMaximum', 'widgetNormal', 'widgetClose'):
             widget = QWidget(self)
             widget.setMinimumSize(self.Radius, self.Radius)
@@ -162,7 +170,6 @@ class CTitleBar(QWidget):
             layout.addWidget(widget)
         layout.addItem(QSpacerItem(
             40, 20, QSizePolicy.Expanding, QSizePolicy.Minimum))
-        # 标题
         self.labelTitle = QLabel(self, alignment=Qt.AlignCenter)
         self.labelTitle.setObjectName('CTitleBar_labelTitle')
         layout.addWidget(self.labelTitle)

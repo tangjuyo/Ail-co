@@ -1,4 +1,4 @@
-from PyQt5.QtWidgets import QDialog, QLabel, QLineEdit, QPushButton, QVBoxLayout
+from PySide6.QtWidgets import QDialog, QLabel, QLineEdit, QPushButton, QVBoxLayout
 
 class PasswordInputDialog(QDialog):
     def __init__(self):

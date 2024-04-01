@@ -1,4 +1,4 @@
-from PyQt5.QtWidgets import QWidget
+from PySide6.QtWidgets import QWidget
 from vue.widget.customTreeWidget import CustomTreeWidget
 
 class leftMainWidget(QWidget):
@@ -19,8 +19,8 @@ class leftMainWidget(QWidget):
         self.customTreeWidget = CustomTreeWidget(self.controller)
         self.category_tree = self.customTreeWidget.getCategory_tree()
         self.category_tree.itemClicked.connect(self.expand_categories)
-        self.category_tree.setFixedWidth(int(self.customTreeWidget.width()*0.41))
-        self.customTreeWidget.setMaximumWidth(int(self.customTreeWidget.width()*0.41))
+        self.category_tree.setFixedWidth(int(self.customTreeWidget.width()*0.45))
+        self.customTreeWidget.setMaximumWidth(int(self.customTreeWidget.width()*0.45))
     
     def loadEmails(self):
         self.all_emails = self.controller.getLoadedMails()

@@ -1,7 +1,7 @@
+from PySide6.QtWidgets import QWidget, QVBoxLayout, QLabel,QApplication
+from PySide6.QtCore import Qt
+from PySide6.QtGui import QMovie
 import sys
-from PyQt5.QtWidgets import QWidget, QVBoxLayout, QLabel,QApplication
-from PyQt5.QtCore import Qt
-from PyQt5.QtGui import QMovie
 
 class LoadingWidget(QWidget):
     def __init__(self):

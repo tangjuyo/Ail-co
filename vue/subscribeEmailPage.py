@@ -1,58 +1,52 @@
-from PyQt5.QtWidgets import QApplication, QWidget, QVBoxLayout, QLineEdit, QPushButton, QComboBox
-from PyQt5.QtCore import pyqtSignal,Qt
+from PySide6.QtWidgets import QApplication, QWidget, QVBoxLayout, QLineEdit, QPushButton, QComboBox, QFrame, QDialog, QDialogButtonBox
+from PySide6.QtCore import Signal, Qt
 from vue.widget.loadingWidget import LoadingWidget
+from vue.widget.cTitleBar import CTitleBar
 
-class subscribeEmailPage(QWidget):
+class subscribeEmailPage(QDialog):
     # Signal personnalisé pour envoyer les informations de l'adresse mail, du mot de passe et du fournisseur
-    email_added = pyqtSignal(str, str, str)
-    thread_finished_signal = pyqtSignal()
+    email_added = Signal(str, str, str)
+    thread_finished_signal = Signal()
     
-    def __init__(self,controller):
-        super().__init__()
-        self.setWindowTitle('Ajouter des adresses mails')
-        self.setWindowFlags(self.windowFlags() | Qt.WindowCloseButtonHint)
-        self.resize_to_half_screen()
-        self.layout = QVBoxLayout()
+    def __init__(self, controller, parent=None):
+        super().__init__(parent)
+        self.setWindowFlags(Qt.Window | Qt.FramelessWindowHint | Qt.Dialog)
         self.controller = controller
+        
+        layout = QVBoxLayout(self)
+        layout.addWidget(CTitleBar(self, title='AilEco-Ajout d\'adresses mails : '))
         
         # Zone de texte pour saisir l'adresse e-mail
         self.email_edit = QLineEdit()
         self.email_edit.setPlaceholderText("Adresse e-mail")
-        self.layout.addWidget(self.email_edit)
+        layout.addWidget(self.email_edit)
 
         # Zone de texte pour saisir le mot de passe
         self.password_edit = QLineEdit()
         self.password_edit.setEchoMode(QLineEdit.Password)
         self.password_edit.setPlaceholderText("Mot de passe")
-        self.layout.addWidget(self.password_edit)
+        layout.addWidget(self.password_edit)
 
         # Menu déroulant pour sélectionner le fournisseur
         self.provider_combo = QComboBox()
         self.provider_combo.addItems(['gmail', 'outlook', 'orange'])
-        self.layout.addWidget(self.provider_combo)
+        layout.addWidget(self.provider_combo)
 
-        # Bouton pour ajouter l'adresse e-mail
-        self.add_button = QPushButton('Ajouter')
-        self.add_button.clicked.connect(self.add_email)
-        self.layout.addWidget(self.add_button)
+        # Boutons OK et Annuler
+        button_box = QDialogButtonBox(QDialogButtonBox.Ok | QDialogButtonBox.Cancel)
+        button_box.accepted.connect(self.accept)
+        button_box.rejected.connect(self.reject)
+        layout.addWidget(button_box)
 
-        self.setLayout(self.layout)
-
-    def add_email(self):
+    def accept(self):
         email = self.email_edit.text()
         password = self.password_edit.text()
         provider = self.provider_combo.currentText()
-        self.controller.add_email_password(email,password)
+        self.controller.add_email_password(email, password)
         # Émet le signal avec les informations de l'adresse mail, du mot de passe et du fournisseur
         self.email_added.emit(email, password, provider)
+        super().accept()
 
-    def resize_to_half_screen(self):
-        desktop = QApplication.desktop()
-        screen_rect = desktop.screenGeometry()
-        half_width = screen_rect.width() / 1.75
-        half_height = screen_rect.height() / 1.75
-        self.resize(int(half_width), int(half_height))
-        
     def handle_new_email(self, email, password, provider):
         self.close()
         #création du widget de loading
