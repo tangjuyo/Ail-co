@@ -20,6 +20,9 @@ class PasswordInputDialog(QDialog):
 
         self.setLayout(layout)
 
+
+    def setpassword(self,mdp):
+        self.password_edit.setText(mdp)
     @property
     def password(self):
         return self.password_edit.text()

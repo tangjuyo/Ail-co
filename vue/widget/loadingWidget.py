@@ -36,8 +36,8 @@ class LoadingWidget(QWidget):
         self.hide()
 
     def resize_to_half_screen(self):
-        desktop = QApplication.desktop()
-        screen_rect = desktop.screenGeometry()
+        screen = QApplication.primaryScreen()
+        screen_rect = screen.availableGeometry()
         half_width = screen_rect.width() / 5
         half_height = screen_rect.height() / 5
         self.resize(int(half_width), int(half_height))

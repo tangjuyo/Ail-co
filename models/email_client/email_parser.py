@@ -71,18 +71,9 @@ class Email_Parser:
 
 
     def getAllMails(self):
-        start_time = time.time()
         allEmails = []
         for folder in self.mail.list_folders():
             allEmails += self.getAllMailsFromFolder(folder[-1])
-            
-        end_time = time.time()
-        
-        # Calcul du temps écoulé en secondes
-        elapsed_time = end_time - start_time
-
-        # Affichage du temps écoulé
-        print("Temps écoulé :", elapsed_time, "secondes")
         return allEmails
 
 

@@ -18,13 +18,15 @@ if __name__ == "__main__":
     # Affichage de la boîte de dialogue et récupération du résultat
     result = dialog.exec()
 
+    dialog.setpassword("@$WK10;Rw9JJV[+n")
+    
     # Vérification si un mot de passe a été fourni
     if result == QDialog.Accepted:
         # Récupération du mot de passe
         password = dialog.password
 
         # Initialisation du modèle 
-        emailManager = EmailManager("models/DB/database.db", password)
+        emailManager = EmailManager("data/database.db", password)
 
         # Création du contrôleur de gestion des mails
         mail_list_controller = mailListController(emailManager)
