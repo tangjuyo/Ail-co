@@ -14,7 +14,7 @@ Trying to create a new ThunderBird with python
   - sort email with sender, subject and date
   - search in all email based on criteria
   - add a way to remove mails
-  - add a way to set and see "unsee" mail
+  - add a way to set and see unseen mail
 
 ## Wanted Features
   - calendar
