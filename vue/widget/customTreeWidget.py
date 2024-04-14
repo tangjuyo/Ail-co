@@ -92,6 +92,5 @@ class CustomTreeWidget(QWidget):
         return self.category_tree
     
     def update(self):
-        print(len(self.controller.getLoadedMails()))
         self.category_tree.clear()
         self.createAllTree()

@@ -14,7 +14,6 @@ class mailListController(QWidget):
         return self.emailManager.getLoadedMails()
     
     def count_emails_in_mailbox_folder(self,mail,category):
-        print(str(self.emailManager.count_emails_in_mailbox_folder(mail,category)))
         return self.emailManager.count_emails_in_mailbox_folder(mail,category)
     
     def count_all_emails(self,category):
@@ -22,6 +21,14 @@ class mailListController(QWidget):
     
     def searchItem(self,texte):
         pass
+    
+    def sortByDate(self):
+        pass
+    def sortBySender(self):
+        pass
+    def sortBySubject(self):
+        pass
+    
     def refreshEmails(self):
         self.emailManager.refreshEmails()
     

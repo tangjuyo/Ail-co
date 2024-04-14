@@ -1,17 +1,17 @@
 from PySide6.QtWidgets import QWidget, QLabel, QVBoxLayout, QHBoxLayout, QCheckBox,QToolButton,QMenu,QLineEdit
 from PySide6.QtGui import QIcon, QPixmap
-from PySide6 import QtGui
+from models.configVar import configVar
 from PySide6.QtCore import Qt
 
 class CustomEmailBandeau(QWidget):
-    def __init__(self, parent=None):
+    def __init__(self, controller, parent=None):
         super(CustomEmailBandeau, self).__init__(parent)
-        
+        self.controller = controller
         # Layouts
         self.main_layout = QHBoxLayout()
         self.text_layout = QVBoxLayout()
         self.date_layout = QVBoxLayout()
-        
+        self.order = 0
         # Labels
         self.date_label = QLabel()
 
@@ -32,12 +32,13 @@ class CustomEmailBandeau(QWidget):
         
         # Créer le menu déroulant du bouton de trie
         self.menu = QMenu(self)
-        self.menu.addAction("Trier par date")
-        self.menu.addAction("Trier par expéditeur")
-        self.menu.addAction("Trier par sujet")
+        self.menu.addAction("Trier par date", self.sortByDate)
+        self.menu.addAction("Trier par expéditeur", self.sortBySender)
+        self.menu.addAction("Trier par sujet", self.sortBySubject)
         self.menu.addSeparator()
-        self.menu.addAction("Ordre croissant",self.sortByOldDate)
-        self.menu.addAction("Ordre décroissant",self.sortByRecentDate)
+        self.menu.addAction("Ordre croissant", lambda: self.sortOrder(True))
+        self.menu.addAction("Ordre décroissant", lambda: self.sortOrder(False))
+
         
         
         # Set up date layout
@@ -72,9 +73,14 @@ class CustomEmailBandeau(QWidget):
     
     def handle_search(self):
         self.controller.searchItem(self.search_textbox.text())
+    
+    
+    def sortOrder(self,boolSort):
+        configVar.update_variable("sortOrder",boolSort)
         
-    def sortByRecentDate(self):
-        pass
-
-    def sortByOldDate(self):
-        pass
+    def sortByDate(self):
+        self.controller.sortByDate()
+    def sortBySender(self):
+        self.controller.sortBySender()
+    def sortBySubject(self):
+        self.controller.sortBySubject()

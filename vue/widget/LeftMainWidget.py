@@ -24,7 +24,6 @@ class leftMainWidget(QWidget):
     
     def loadEmails(self):
         self.all_emails = self.controller.getLoadedMails()
-        print(len(self.all_emails))
 
     def expand_categories(self, item):
         # Implémentez la logique pour l'expansion des catégories ici

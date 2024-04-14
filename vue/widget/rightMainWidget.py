@@ -7,12 +7,13 @@ from vue.widget.customListWidgetItem import CustomWidgetItem
 from vue.widget.customEmailBandeau import CustomEmailBandeau
     
 class rightMainWidget(QWidget):
-    def __init__(self):
+    def __init__(self,controller):
         super().__init__()
+        self.controller = controller
         self.layoutRight = QVBoxLayout()
         
         #bandeau spécifique des mails
-        bandeau_mail = CustomEmailBandeau()
+        bandeau_mail = CustomEmailBandeau(self.controller)
         bandeau_mail.setFont(QFont('Arial', 8))
         self.layoutRight.addWidget(bandeau_mail)
         # Création de la vue de la liste des mails
@@ -47,29 +48,6 @@ class rightMainWidget(QWidget):
         # Définition du modèle pour la vue
         self.mail_view.setModel(model)
 
-    """
-    def showSelectedMails(self,emails):
-        self.mail_list.clear()
-        self.mail_list.setUniformItemSizes(True)
-        self.emails = emails
-        # Ajouter les e-mails triés à la liste
-        for index, row in self.emails.iterrows():
-            mail_item = CustomListWidgetItem()
-            mail_item.setSender(row["sender"])
-            mail_item.setSubject(row["subject"])
-            try :
-                mail_item.setIcon("vue/image/" + row["mail"].split("@")[1].split(".")[0] + ".png")
-            except :
-                mail_item.setIcon("vue/image/email.png")
-
-            mail_item.setDate(row["date"])
-            mail_item.setFont(QFont('Arial', 8))
-            myQListWidgetItem = QListWidgetItem(self.mail_list)
-            myQListWidgetItem.setSizeHint(mail_item.sizeHint())
-            self.mail_list.addItem(myQListWidgetItem)
-            self.mail_list.setItemWidget(myQListWidgetItem, mail_item)
-            myQListWidgetItem.setData(Qt.UserRole, row["body"])
-    """
     def display_mail_content(self, item):
         content = item.data(Qt.UserRole)
         self.central_widget = emailViewPage()

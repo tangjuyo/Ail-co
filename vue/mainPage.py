@@ -20,7 +20,7 @@ class MailListWidget(QWidget):
         self.left_panel = leftMainWidget(self.mailListController,self.emails,self.updateMailsView)
         self.mailListController.add_email_thread_finished_signal.connect(self.updateTreeView)
         # Partie droite
-        self.right_panel = rightMainWidget()
+        self.right_panel = rightMainWidget(self.mailListController)
         # Bandeau principal
         self.header_widget = bandeauWidget(self.mailListController)
         layout.addLayout(self.header_widget.bandeauLayout)

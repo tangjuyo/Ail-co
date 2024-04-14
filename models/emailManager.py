@@ -1,5 +1,5 @@
-from models.DB.SQliteDAO import SQLiteDAO
-from models.email_client.email_parser import Email_Parser
+from models.SQliteDAO import SQLiteDAO
+from models.email_parser import Email_Parser
 from models.provider import Provider
 import pandas as pd
 

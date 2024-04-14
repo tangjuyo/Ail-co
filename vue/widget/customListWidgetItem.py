@@ -2,7 +2,7 @@ from PySide6.QtWidgets import QWidget, QLabel, QVBoxLayout, QHBoxLayout, QCheckB
 from PySide6 import QtGui
 from PySide6.QtCore import Qt 
 
-class CustomWidgetItem:
+class CustomWidgetItem (QWidget):
     def __init__(self):
         self.sender = ""
         self.subject = ""
@@ -33,7 +33,7 @@ class CustomWidgetItem(QWidget):
         super(CustomWidgetItem, self).__init__(parent)
         
         # Layouts
-        self.main_layout = QHBoxLayout()
+        self.main_layout = QHBoxLayout(self)
         self.text_layout = QVBoxLayout()
         self.date_layout = QVBoxLayout()
         
@@ -92,9 +92,22 @@ class CustomWidgetItem(QWidget):
     
     def setIcon(self, image_path):
         self.icon_label.setPixmap(QtGui.QPixmap(image_path))
+        self.icon_label.setScaledContents(True)
     
     def setData(self, path):
         self.path = path
+        
+    def getDate(self):
+        return self.date_label.text
+    
+    def getSender(self):
+        return self.sender_label.text
+    
+    def getSubject(self):
+        return self.subject_label.text
+    
+    def getIcon(self):
+        return self.icon_label
     
     def getData(self):
         return self.path

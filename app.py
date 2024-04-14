@@ -25,7 +25,7 @@ if __name__ == "__main__":
         # Récupération du mot de passe
         password = dialog.password
 
-        # Initialisation du modèle 
+        # Initialisation des modèles
         emailManager = EmailManager("data/database.db", password)
 
         # Création du contrôleur de gestion des mails
