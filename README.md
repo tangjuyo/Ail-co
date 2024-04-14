@@ -1,7 +1,7 @@
 # AilEco
 
 
-Trying to create a new ThunderBird with python
+Trying to create a new ThunderBird like application with python
 
 ## Features availables
   - the application is actually ony in french, i need to work on a english config version 
