@@ -4,7 +4,7 @@
 Trying to create a new ThunderBird with python
 
 ## Features availables
-  - actually in a french application, need to work on a english config version 
+  - the application is actually ony in french, i need to work on a english config version 
   - add all emails with a lot of provider available ( need to try some of them thought)
   - emails are save in a sqlite database with an hight security AES key linked with the password of ur choice
   - refresh all new mails at any time
