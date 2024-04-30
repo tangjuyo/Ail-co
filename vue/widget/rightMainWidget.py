@@ -1,11 +1,11 @@
-from PySide6.QtWidgets import QWidget, QVBoxLayout, QListView
+from PySide6.QtWidgets import QWidget, QVBoxLayout, QListView,QHBoxLayout
 from PySide6.QtCore import Qt
 from PySide6.QtGui import QFont
 from vue.emailViewPage import emailViewPage
 from vue.widget.customListModel import CustomListItemModel
 from vue.widget.customListWidgetItem import CustomWidgetItem
 from vue.widget.customEmailBandeau import CustomEmailBandeau
-    
+
 class rightMainWidget(QWidget):
     def __init__(self,controller):
         super().__init__()
@@ -16,11 +16,18 @@ class rightMainWidget(QWidget):
         bandeau_mail = CustomEmailBandeau(self.controller)
         bandeau_mail.setFont(QFont('Arial', 8))
         self.layoutRight.addWidget(bandeau_mail)
+
+        showHtmlLayout = QHBoxLayout()
         # Création de la vue de la liste des mails
         self.mail_view = QListView()
         self.mail_view.setUniformItemSizes(True)
         self.mail_view.clicked.connect(self.display_mail_content)
-        self.layoutRight.addWidget(self.mail_view)
+        showHtmlLayout.addWidget(self.mail_view,1)
+
+        self.htlm_widget = emailViewPage()
+        showHtmlLayout.addWidget(self.htlm_widget,3)
+
+        self.layoutRight.addLayout(showHtmlLayout)
 
     def getLayout(self):
         return self.layoutRight
@@ -50,6 +57,5 @@ class rightMainWidget(QWidget):
 
     def display_mail_content(self, item):
         content = item.data(Qt.UserRole)
-        self.central_widget = emailViewPage()
-        self.central_widget.load_html(content)
-        self.central_widget.show()
+        self.htlm_widget.load_html(content)
+        self.htlm_widget.show()

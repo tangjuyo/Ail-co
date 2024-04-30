@@ -1,7 +1,7 @@
 from PySide6.QtWidgets import QVBoxLayout,QTreeWidget,QTreeWidgetItem,QWidget,QSizePolicy
 from PySide6.QtGui import QFont,QIcon
 from PySide6.QtCore import Qt
-
+from models.jsonConfigs.readVariables import readVariables
 class CustomTreeWidget(QWidget):
     def __init__ (self,controller, parent = None):
         super(CustomTreeWidget, self).__init__(parent)
@@ -55,7 +55,7 @@ class CustomTreeWidget(QWidget):
         for category_name, icon_path in categories:
             category_item = QTreeWidgetItem()
             category_item.setIcon(0, QIcon(icon_path))
-            category_item.setText(0, category_name)
+            category_item.setText(0, readVariables.lire_variable(self.__class__.__name__,category_name))
             count = self.controller.count_all_emails(category_name)
             category_item.setText(1, str(count))
             general_mail_tree_widget.addChild(category_item)
@@ -80,7 +80,7 @@ class CustomTreeWidget(QWidget):
         for category_name, icon_path in categories:
             category_item = QTreeWidgetItem()
             category_item.setIcon(0, QIcon(icon_path))
-            category_item.setText(0, category_name)
+            category_item.setText(0, readVariables.lire_variable(self.__class__.__name__,category_name))
             count = self.controller.count_emails_in_mailbox_folder(mail, category_name)
             category_item.setText(1, str(count))
             mail_tree_widget.addChild(category_item)

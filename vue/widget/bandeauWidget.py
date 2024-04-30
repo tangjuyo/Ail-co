@@ -1,8 +1,8 @@
-from PySide6.QtWidgets import QWidget,QPushButton,QHBoxLayout,QToolButton,QMenu,QLineEdit
+from PySide6.QtWidgets import QWidget,QPushButton,QHBoxLayout,QToolButton
 from PySide6.QtGui import QIcon, QPixmap
 from vue.widget.loadingWidget import LoadingWidget
 from vue.subscribeEmailPage import subscribeEmailPage
-
+from models.jsonConfigs.readVariables import readVariables
 class bandeauWidget(QWidget):
     def __init__(self,controller):
         super().__init__()
@@ -15,7 +15,7 @@ class bandeauWidget(QWidget):
         self.bandeauLayout.addWidget(self.button_refresh)
 
         # Bouton pour ouvrir l'interface AddEmailsWidget
-        self.add_emails_button = QPushButton('Ajouter des adresses mails')
+        self.add_emails_button = QPushButton(readVariables.lire_variable(self.__class__.__name__,"addEmailsText"))
         self.add_emails_button.clicked.connect(self.open_add_emails_window)
         self.bandeauLayout.addWidget(self.add_emails_button)
         

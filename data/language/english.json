@@ -1,0 +1,33 @@
+{
+    "PasswordInputDialog": {
+        "windowsTitle": "Login page",
+        "passwordLabel": "Enter password"
+    },
+    "LoadingWidget": {
+        "windowsTitle": "Loading screen",
+        "loadingText": "Loading ..."
+    },
+    "CustomTreeWidget": {
+        "Boîte de réception": "Mailbox",
+        "Éléments envoyés": "Sent emails",
+        "Éléments supprimés": "Deleted emails",
+        "Spam": "Spam emails",
+        "GeneralBox": "General"
+    },
+    "CustomEmailBandeau": {
+        "sortDate": "Sort by date",
+        "sortSender": "Sort by sender",
+        "sortSubject": "Sort by subject",
+        "ascendingOrder": "Ascending order",
+        "descendingOrder": "Descending order",
+        "searchTextbox": "Search"
+    },
+    "subscribeEmailPage": {
+        "windowsTitle": "AilEco-Adding email addresses :",
+        "hintAdressMail": "Enter your email address",
+        "hintPassword": "Enter your password"
+    },
+    "bandeauWidget": {
+        "addEmailsText": "Add email addresses"
+    }
+}

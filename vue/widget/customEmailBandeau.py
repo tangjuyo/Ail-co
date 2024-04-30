@@ -1,7 +1,8 @@
 from PySide6.QtWidgets import QWidget, QLabel, QVBoxLayout, QHBoxLayout, QCheckBox,QToolButton,QMenu,QLineEdit
 from PySide6.QtGui import QIcon, QPixmap
-from models.configVar import configVar
+from models.jsonConfigs.configVar import configVar
 from PySide6.QtCore import Qt
+from models.jsonConfigs.readVariables import readVariables
 
 class CustomEmailBandeau(QWidget):
     def __init__(self, controller, parent=None):
@@ -32,12 +33,12 @@ class CustomEmailBandeau(QWidget):
         
         # Créer le menu déroulant du bouton de trie
         self.menu = QMenu(self)
-        self.menu.addAction("Trier par date", self.sortByDate)
-        self.menu.addAction("Trier par expéditeur", self.sortBySender)
-        self.menu.addAction("Trier par sujet", self.sortBySubject)
+        self.menu.addAction(readVariables.lire_variable(self.__class__.__name__,"sortDate"), self.sortByDate)
+        self.menu.addAction(readVariables.lire_variable(self.__class__.__name__,"sortSender"), self.sortBySender)
+        self.menu.addAction(readVariables.lire_variable(self.__class__.__name__,"sortSubject"), self.sortBySubject)
         self.menu.addSeparator()
-        self.menu.addAction("Ordre croissant", lambda: self.sortOrder(True))
-        self.menu.addAction("Ordre décroissant", lambda: self.sortOrder(False))
+        self.menu.addAction(readVariables.lire_variable(self.__class__.__name__,"ascendingOrder"), lambda: self.sortOrder(True))
+        self.menu.addAction(readVariables.lire_variable(self.__class__.__name__,"descendingOrder"), lambda: self.sortOrder(False))
 
         
         
@@ -65,14 +66,14 @@ class CustomEmailBandeau(QWidget):
     
     def search_bar(self):
         search_layout = QHBoxLayout()
-        self.search_textbox = QLineEdit()
-        self.search_textbox.setPlaceholderText("Rechercher")
-        self.search_textbox.returnPressed.connect(self.handle_search)
-        search_layout.addWidget(self.search_textbox)
+        self.searchTextbox = QLineEdit()
+        self.searchTextbox.setPlaceholderText(readVariables.lire_variable(self.__class__.__name__,"searchTextbox"))
+        self.searchTextbox.returnPressed.connect(self.handle_search)
+        search_layout.addWidget(self.searchTextbox)
         self.main_layout.addLayout(search_layout,1)
     
     def handle_search(self):
-        self.controller.searchItem(self.search_textbox.text())
+        self.controller.searchItem(self.searchTextbox.text())
     
     
     def sortOrder(self,boolSort):

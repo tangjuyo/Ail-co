@@ -1,4 +1,4 @@
-import configVar
+import models.jsonConfigs.configVar as configVar
 
 class TrieurEmail:
     def __init__(self, emails):

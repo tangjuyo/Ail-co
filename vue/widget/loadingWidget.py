@@ -2,6 +2,7 @@ from PySide6.QtWidgets import QWidget, QVBoxLayout, QLabel,QApplication
 from PySide6.QtCore import Qt
 from PySide6.QtGui import QMovie
 import sys
+from models.jsonConfigs.readVariables import readVariables
 
 class LoadingWidget(QWidget):
     def __init__(self):
@@ -11,11 +12,11 @@ class LoadingWidget(QWidget):
 
     def initUI(self):
         layout = QVBoxLayout()
-        self.setWindowTitle("Chargement de vos mails...")
+        self.setWindowTitle(readVariables.lire_variable(self.__class__.__name__,"windowsTitle"))
         # QLabel pour afficher le texte
-        self.textLabel = QLabel("Chargement de vos mails...")
-        self.textLabel.setAlignment(Qt.AlignCenter)
-        layout.addWidget(self.textLabel)
+        self.loadingText = QLabel(readVariables.lire_variable(self.__class__.__name__,"loadingText"))
+        self.loadingText.setAlignment(Qt.AlignCenter)
+        layout.addWidget(self.loadingText)
 
         # QLabel pour afficher le GIF de chargement
         self.loadingLabel = QLabel(self)

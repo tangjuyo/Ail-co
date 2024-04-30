@@ -1,5 +1,4 @@
 {
-    "test": "test",
-    "variable1": "nouvelle_valeur1",
-    "sortOrder": true
+    "sortOrder": true,
+    "language": "fran\u00e7ais"
 }

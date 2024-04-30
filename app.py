@@ -1,5 +1,5 @@
 from PySide6.QtWidgets import QApplication,QDialog
-from vue.mainPage import MailListWidget
+from vue.mainPage import mainPage
 from controller.mailListController import mailListController
 from vue.loginPage import PasswordInputDialog
 from models.emailManager import EmailManager
@@ -14,7 +14,7 @@ if __name__ == "__main__":
     # Création de la boîte de dialogue pour le mot de passe
     dialog = PasswordInputDialog()
     
-    apply_stylesheet(dialog, theme='light_red.xml')
+    apply_stylesheet(dialog, theme='dark_red.xml')
     # Affichage de la boîte de dialogue et récupération du résultat
     result = dialog.exec()
 
@@ -26,22 +26,13 @@ if __name__ == "__main__":
         password = dialog.password
 
         # Initialisation des modèles
-        emailManager = EmailManager("data/database.db", password)
+        emailManager = EmailManager("data/database/database.db", password)
 
         # Création du contrôleur de gestion des mails
         mail_list_controller = mailListController(emailManager)
         
         # Création de la fenêtre principale et affichage
-        window = MailListWidget(mail_list_controller)
+        window = mainPage(mail_list_controller)
         window.show()
-        apply_stylesheet(app, theme='light_red.xml')
+        apply_stylesheet(app, theme='dark_red.xml')
         app.exec()
-
-    #gmail
-    #mailparser = Email_Parser("imap.gmail.com","julienvacher44@gmail.com","azph qifg xunl elxw")
-    #orange
-    #mailparser = Email_Parser("imap.orange.fr","julien.vacher2@orange.fr","temporarymdpJUJU44521")
-    #outlook
-    #mailparser = Email_Parser("imap-mail.outlook.com","julien.vacher2@outlook.fr","G6;=(\N|@>~@*INl")
-    #gmail
-    #tangjuyo44@gmail.com ynxg qtaf dlpp ryln

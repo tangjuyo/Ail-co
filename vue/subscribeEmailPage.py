@@ -2,6 +2,7 @@ from PySide6.QtWidgets import QApplication, QWidget, QVBoxLayout, QLineEdit, QPu
 from PySide6.QtCore import Signal, Qt
 from vue.widget.loadingWidget import LoadingWidget
 from vue.widget.cTitleBar import CTitleBar
+from models.jsonConfigs.readVariables import readVariables
 
 class subscribeEmailPage(QDialog):
     # Signal personnalisé pour envoyer les informations de l'adresse mail, du mot de passe et du fournisseur
@@ -14,17 +15,17 @@ class subscribeEmailPage(QDialog):
         self.controller = controller
         
         layout = QVBoxLayout(self)
-        layout.addWidget(CTitleBar(self, title='AilEco-Ajout d\'adresses mails : '))
+        layout.addWidget(CTitleBar(self, title=readVariables.lire_variable(self.__class__.__name__,"windowsTitle")))
         
         # Zone de texte pour saisir l'adresse e-mail
         self.email_edit = QLineEdit()
-        self.email_edit.setPlaceholderText("Adresse e-mail")
+        self.email_edit.setPlaceholderText(readVariables.lire_variable(self.__class__.__name__,"hintAdressMail"))
         layout.addWidget(self.email_edit)
 
         # Zone de texte pour saisir le mot de passe
         self.password_edit = QLineEdit()
         self.password_edit.setEchoMode(QLineEdit.Password)
-        self.password_edit.setPlaceholderText("Mot de passe")
+        self.password_edit.setPlaceholderText(readVariables.lire_variable(self.__class__.__name__,"hintPassword"))
         layout.addWidget(self.password_edit)
 
         # Menu déroulant pour sélectionner le fournisseur

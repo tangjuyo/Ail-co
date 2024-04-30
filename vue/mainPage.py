@@ -6,7 +6,7 @@ from vue.widget.rightMainWidget import rightMainWidget
 from vue.widget.bandeauWidget import bandeauWidget
 from vue.widget.cTitleBar import CTitleBar
 
-class MailListWidget(QWidget):
+class mainPage(QWidget):
     
     def __init__(self,mailListController):
         super().__init__()

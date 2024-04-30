@@ -1,0 +1,33 @@
+{
+    "PasswordInputDialog": {
+        "windowsTitle": "Page de connexion",
+        "passwordLabel": "Entrer le mot de passe"
+    },
+    "LoadingWidget": {
+        "windowsTitle": "Écran de chargement",
+        "loadingText": "En cours de chargement ..."
+    },
+    "CustomTreeWidget": {
+        "Boîte de réception": "Boîte de réception",
+        "Éléments envoyés": "Éléments envoyés",
+        "Éléments supprimés": "Éléments supprimés",
+        "Spam": "Courriels indésirables",
+        "GeneralBox": "Général"
+    },
+    "CustomEmailBandeau": {
+        "sortDate": "Trier par date",
+        "sortSender": "Trier par expéditeur",
+        "sortSubject": "Trier par sujet",
+        "ascendingOrder": "Ordre croissant",
+        "descendingOrder": "Ordre décroissant",
+        "searchTextbox": "Rechercher"
+    },
+    "subscribeEmailPage": {
+        "windowsTitle": "AilEco-Ajout d'adresses mails :",
+        "hintAdressMail": "Renseigner votre adresse mail",
+        "hintPassword": "Renseigner votre mot de passe"
+    },
+    "bandeauWidget": {
+        "addEmailsText": "Ajouter des adresses mails"
+    }
+}

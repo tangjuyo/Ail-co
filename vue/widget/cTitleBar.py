@@ -153,6 +153,7 @@ class CTitleBar(QWidget):
     
     def show_menu(self):
         self.menu.popup(self.buttonFiles.mapToGlobal(self.buttonFiles.rect().bottomLeft()))
+        
     def setupUi(self,parent):
         self.setMinimumSize(0, self.Radius)
         self.setMaximumSize(0xFFFFFF, self.Radius)
