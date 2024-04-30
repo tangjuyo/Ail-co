@@ -26,7 +26,7 @@ class LoadingWidget(QWidget):
         
     def loadMovie(self):
         # Créer et configurer l'animation du GIF
-        self.movie = QMovie("vue/image/loading.gif")
+        self.movie = QMovie("data/image/loading.gif")
         self.loadingLabel.setMovie(self.movie)
         self.movie.start()
 

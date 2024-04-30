@@ -37,10 +37,10 @@ class leftMainWidget(QWidget):
             parent_text = item.parent().text(0)
             item_text = item.text(0)
             if parent_text == readVariables.lire_variable("CustomTreeWidget","GeneralBox"):
-                self.emails = self.all_emails.loc[(self.all_emails['folder'] == item_text)]
+                self.emails = self.all_emails.loc[(self.all_emails['folder'] == str(readVariables.lire_global_variable_from_language(item_text)))]
             else:
                 if item_text in self.categories_to_try:
-                    self.emails = self.all_emails.loc[(self.all_emails['folder'] == item_text) & (self.all_emails['mail'] == parent_text)]
+                    self.emails = self.all_emails.loc[(self.all_emails['folder'] == str(readVariables.lire_global_variable_from_language(item_text))) & (self.all_emails['mail'] == parent_text)]
             self.show_selected_mails_callback(self.emails)
         if item.childCount() > 0:
             item.setExpanded(not item.isExpanded())

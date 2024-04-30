@@ -43,9 +43,10 @@ class rightMainWidget(QWidget):
             mail_item.setSender(row["sender"])
             mail_item.setSubject(row["subject"])
             try:
-                mail_item.setIcon("vue/image/" + row["mail"].split("@")[1].split(".")[0] + ".png")
+                mail_item.setIcon("data/image/" + row["mail"].split("@")[1].split(".")[0] + ".png")
             except:
-                mail_item.setIcon("vue/image/email.png")
+                mail_item.setIcon("data/image/" + row["mail"].split("@")[1].split(".")[0] + ".jpg")
+
 
             mail_item.setDate(row["date"])
             mail_item.setData(row["body"])

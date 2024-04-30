@@ -22,3 +22,18 @@ class readVariables:
         with open(readVariables.initLanguage(), 'r') as fichier:
             config = json.load(fichier)
             return config[groupe][variable]
+        
+    @staticmethod
+    def lire_global_variable_from_language(variable):
+        
+        with open(readVariables.initLanguage(), 'r') as fichier:
+            config = json.load(fichier)
+            return readVariables.get_key_from_value(config["CustomTreeWidget"],variable)
+
+    @staticmethod 
+    def get_key_from_value(json_data, value):
+        for key, val in json_data.items():
+            if val == value:
+                return key
+        return None
+

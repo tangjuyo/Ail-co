@@ -139,7 +139,7 @@ class CTitleBar(QWidget):
         # Création du bouton
         self.buttonFiles = QToolButton(self)
         #self.buttonFiles.setPopupMode(QToolButton.InstantPopup)
-        self.buttonFiles.setIcon(QIcon(QPixmap("vue/image/menu.png")))
+        self.buttonFiles.setIcon(QIcon(QPixmap("data/image/menu.png")))
         self.buttonFiles.setStyleSheet("font-size: 20px;margin: 0;")
         self.buttonFiles.clicked.connect(self.show_menu)
         self.layout().addWidget(self.buttonFiles)

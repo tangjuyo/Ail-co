@@ -22,7 +22,7 @@ class SettingsPage(QWidget):
         
     def init_settings(self):
     
-        self.init_topLvl_settings("Général","vue/image/settings.png")
+        self.init_topLvl_settings("Général","data/image/settings.png")
 
 
     def init_topLvl_settings(self,nameCategorie,categories):

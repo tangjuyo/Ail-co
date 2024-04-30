@@ -10,7 +10,7 @@ class bandeauWidget(QWidget):
         self.bandeauLayout = QHBoxLayout()
         # Bouton pour refresh les mails
         self.button_refresh = QToolButton(self)
-        self.button_refresh.setIcon(QIcon(QPixmap("vue/image/refresh.png")))
+        self.button_refresh.setIcon(QIcon(QPixmap("data/image/refresh.png")))
         self.button_refresh.clicked.connect(self.refresh_mails)
         self.bandeauLayout.addWidget(self.button_refresh)
 

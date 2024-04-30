@@ -38,8 +38,8 @@ class CustomTreeWidget(QWidget):
     def general_Tree(self):
         # Créer le nœud principal "Général"
         general_mail_tree_widget = QTreeWidgetItem()
-        general_mail_tree_widget.setIcon(0, QIcon("vue/image/favorite.png"))
-        general_mail_tree_widget.setText(0, "Général")
+        general_mail_tree_widget.setIcon(0, QIcon("data/image/favorite.png"))
+        general_mail_tree_widget.setText(0, readVariables.lire_variable(self.__class__.__name__,"GeneralBox"))
         font = QFont()
         font.setBold(True)
         general_mail_tree_widget.setFont(0, font)
@@ -47,9 +47,9 @@ class CustomTreeWidget(QWidget):
 
         # Définir les catégories avec leurs icônes et comptages
         categories = [
-            ("Boîte de réception", "vue/image/inbox.png"),
-            ("Éléments envoyés", "vue/image/send.png"),
-            ("Éléments supprimés", "vue/image/delete.png")
+            ("Boîte de réception", "data/image/inbox.png"),
+            ("Éléments envoyés", "data/image/send.png"),
+            ("Éléments supprimés", "data/image/delete.png")
         ]
 
         for category_name, icon_path in categories:
@@ -63,7 +63,7 @@ class CustomTreeWidget(QWidget):
     def email_branch_tree(self, mail):
         # Créer le nœud principal
         mail_tree_widget = QTreeWidgetItem()
-        mail_tree_widget.setIcon(0, QIcon("vue/image/favorite.png"))
+        mail_tree_widget.setIcon(0, QIcon("data/image/favorite.png"))
         mail_tree_widget.setText(0, mail)
         font = QFont()
         font.setBold(True)
@@ -71,10 +71,10 @@ class CustomTreeWidget(QWidget):
 
         # Définir les catégories avec leurs icônes et comptages
         categories = [
-            ("Boîte de réception", "vue/image/inbox.png"),
-            ("Éléments envoyés", "vue/image/send.png"),
-            ("Éléments supprimés", "vue/image/delete.png"),
-            ("Spam", "vue/image/spam.png")
+            ("Boîte de réception", "data/image/inbox.png"),
+            ("Éléments envoyés", "data/image/send.png"),
+            ("Éléments supprimés", "data/image/delete.png"),
+            ("Spam", "data/image/spam.png")
         ]
 
         for category_name, icon_path in categories:

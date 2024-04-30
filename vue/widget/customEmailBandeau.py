@@ -25,7 +25,7 @@ class CustomEmailBandeau(QWidget):
         
         # Bouton pour afficher options de trie
         self.button_trie = QToolButton(self)
-        self.button_trie.setIcon(QIcon(QPixmap("vue/image/trie.png")))
+        self.button_trie.setIcon(QIcon(QPixmap("data/image/trie.png")))
         self.button_trie.clicked.connect(self.show_menu)
 
         # Add layouts to main layout
