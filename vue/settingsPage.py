@@ -1,53 +1,116 @@
-from PySide6.QtWidgets import QWidget, QTreeView, QHBoxLayout, QStackedWidget, QApplication, QTreeWidget,QTreeWidgetItem
-from PySide6.QtGui import QFont,QIcon
 import sys
+from PySide6.QtCore import Qt
+from PySide6.QtWidgets import QApplication, QWidget, QVBoxLayout, QTabWidget, QGridLayout, QLabel, QLineEdit, QCheckBox, QComboBox,QPushButton
+from PySide6.QtGui import QIntValidator, QDoubleValidator
 
 class SettingsPage(QWidget):
     def __init__(self):
         super().__init__()
-        self.resize_to_half_screen()
-        # Layout principal
-        layout = QHBoxLayout(self)
-        self.category_tree = QTreeWidget()
 
-        # Affichage des paramètres à droite
-        self.stacked_widget = QStackedWidget()
+        self.initUI()
 
-        # Ajouter les widgets au layout principal
-        layout.addWidget(self.category_tree,1)
-        layout.addWidget(self.stacked_widget,3)
+    def initUI(self):
+        self.setWindowTitle("Settings")
+        self.setFixedSize(400, 600)
 
-        # Initialiser les catégories de paramètres
-        self.init_settings()
-        
-    def init_settings(self):
+        layout = QVBoxLayout()
+
+        tab_widget = QTabWidget()
+        layout.addWidget(tab_widget)
+
+        # Create tabs
+        accounts_tab = QWidget()
+        accounts_tab.setLayout(QGridLayout())
+        tab_widget.addTab(accounts_tab, "Accounts")
+
+        compose_tab = QWidget()
+        compose_tab.setLayout(QGridLayout())
+        tab_widget.addTab(compose_tab, "Compose")
+
+        # Accounts tab
+        accounts_tab_layout = accounts_tab.layout()
+
+        # Add account pattern
+        for i, account in enumerate(["Email 1", "Email 2", "Email 3"]):
+            account_layout = QGridLayout()
+            accounts_tab_layout.addLayout(account_layout, i, 0, 1, 2)
+
+            account_label = QLabel("Account " + str(i + 1) + ":")
+            account_layout.addWidget(account_label, 0, 0)
+
+            email_edit = QLineEdit()
+            email_edit.setText(account)
+            email_edit.setStyleSheet("color:white;")
+            #email_edit.setPlaceholderText("Email address")
+            account_layout.addWidget(email_edit, 1, 0)
+
+            password_edit = QLineEdit()
+            password_edit.setEchoMode(QLineEdit.Password)
+            account_layout.addWidget(password_edit, 2, 0)
+
+            server_edit = QLineEdit()
+            server_edit.setPlaceholderText("Server address")
+            account_layout.addWidget(server_edit, 3, 0)
+
+            port_edit = QLineEdit()
+            port_edit.setPlaceholderText("Port number")
+            port_edit.setValidator(QIntValidator())
+            account_layout.addWidget(port_edit, 4, 0)
+
+        # Compose tab
+        compose_tab_layout = compose_tab.layout()
+
+        # Add compose pattern
+        for i, compose_setting in enumerate(["Font size", "Line spacing", "Theme"]):
+            compose_layout = QGridLayout()
+            compose_tab_layout.addLayout(compose_layout, i, 0, 1, 2)
+
+            setting_label = QLabel(compose_setting + ":")
+            compose_layout.addWidget(setting_label, 0, 0)
+
+            edit = QLineEdit()
+            edit.setPlaceholderText(compose_setting)
+            compose_layout.addWidget(edit, 1, 0)
+
+            self.add_button(compose_tab_layout, compose_layout, i)
+
+        self.setLayout(layout)
     
-        self.init_topLvl_settings("Général","data/image/settings.png")
+    def add_button(self, parent_layout, child_layout, index):
+        button = QPushButton("Add")
+        child_layout.addWidget(button, index + 1, 1)
+        button.clicked.connect(lambda: self.add_account(child_layout, index))
 
+    def add_account(self, layout, index):
+        account_layout = QGridLayout()
+        layout.insertLayout(index, account_layout)
 
-    def init_topLvl_settings(self,nameCategorie,categories):
-        # Créer le nœud principal "Général"
-        general_mail_tree_widget = QTreeWidgetItem()
-        general_mail_tree_widget.setText(0, nameCategorie)
-        font = QFont()
-        font.setBold(True)
-        general_mail_tree_widget.setFont(0, font)
-        self.category_tree.addTopLevelItem(general_mail_tree_widget)
+        account_label = QLabel("Account " + str(index + 1) + ":")
+        account_layout.addWidget(account_label, 0, 0)
 
-        for category_name in categories:
-            category_item = QTreeWidgetItem()
-            category_item.setText(0, category_name)
-            general_mail_tree_widget.addChild(category_item)
+        email_edit = QLineEdit()
+        email_edit.setPlaceholderText("Email address")
+        account_layout.addWidget(email_edit, 1, 0)
 
-    def resize_to_half_screen(self):
-        screen = QApplication.primaryScreen()
-        screen_rect = screen.availableGeometry()
-        half_width = screen_rect.width() / 1.5
-        half_height = screen_rect.height() / 1.5
-        self.resize(int(half_width), int(half_height))
+        password_edit = QLineEdit()
+        password_edit.setEchoMode(QLineEdit.Password)
+        account_layout.addWidget(password_edit, 2, 0)
+
+        server_edit = QLineEdit()
+        server_edit.setPlaceholderText("Server address")
+        account_layout.addWidget(server_edit, 3, 0)
+
+        port_edit = QLineEdit()
+        port_edit.setPlaceholderText("Port number")
+        port_edit.setValidator(QIntValidator())
+        account_layout.addWidget(port_edit, 4, 0)
+
+        self.accounts.append({"email": email_edit.text(), "password": password_edit.text(), "server": server_edit.text(), "port": port_edit.text()})
+
 
 if __name__ == "__main__":
     app = QApplication(sys.argv)
     settings_page = SettingsPage()
     settings_page.show()
-    sys.exit(app.exec())
+    sys.exit(app.exec_())
+
