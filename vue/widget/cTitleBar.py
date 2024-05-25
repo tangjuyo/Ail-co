@@ -8,9 +8,10 @@ Created on 2019年7月15日
 """
 
 from PySide6.QtCore import Qt, QPointF
-from PySide6.QtGui import QWindowStateChangeEvent, QFont, QMouseEvent,QIcon,QPixmap
+from PySide6.QtGui import QWindowStateChangeEvent, QFont, QMouseEvent,QIcon,QPixmap,QAction
 from PySide6.QtWidgets import QWidget, QHBoxLayout, QSpacerItem, QSizePolicy,QLabel, QPushButton, QApplication, QToolButton,QMenu
-
+from models.jsonConfigs.readVariables import readVariables
+from vue.settingsPage import SettingsPage
 class CTitleBar(QWidget):
 
     Radius = 24
@@ -145,7 +146,9 @@ class CTitleBar(QWidget):
         self.layout().addWidget(self.buttonFiles)
         
         self.menu = QMenu(self)
-        self.menu.addAction("action1")
+        settings_button = QAction("Settings",self)
+        settings_button.triggered.connect(self.show_settings)
+        self.menu.addAction(settings_button)
         self.menu.addAction("action2")
         self.menu.addAction("action3")
         
@@ -153,7 +156,11 @@ class CTitleBar(QWidget):
     
     def show_menu(self):
         self.menu.popup(self.buttonFiles.mapToGlobal(self.buttonFiles.rect().bottomLeft()))
-        
+    
+    def show_settings(self):
+        settings_page = SettingsPage()
+        settings_page.show()
+
     def setupUi(self,parent):
         self.setMinimumSize(0, self.Radius)
         self.setMaximumSize(0xFFFFFF, self.Radius)

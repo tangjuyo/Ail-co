@@ -6,7 +6,6 @@ from models.emailManager import EmailManager
 import sys
 from qt_material import apply_stylesheet
 
-
 if __name__ == "__main__":
     # Création de l'application
     app = QApplication(sys.argv)
